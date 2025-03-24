@@ -115,6 +115,6 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground flex justify-center py-10;
+    @apply bg-background text-foreground flex justify-center;
   }
 }
