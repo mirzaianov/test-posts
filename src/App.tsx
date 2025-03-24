@@ -1,9 +1,10 @@
-function App() {
+import Posts from "./components/posts";
+
+export default function App() {
   return (
-    <>
-      <div>Test</div>
-    </>
+    <main className="flex min-h-screen flex-col items-center justify-between py-10">
+      <h1>Posts</h1>
+      <Posts/>
+    </main>
   )
 }
-
-export default App
