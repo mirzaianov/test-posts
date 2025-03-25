@@ -2,6 +2,12 @@ import useFetch from '../hooks/useFetch';
 import { POSTS_URL, USERS_URL } from '../constants';
 import { type User, type Post } from '../types';
 import { Avatar, AvatarFallback, AvatarImage } from '../components/ui/avatar';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '../components/ui/accordion';
 
 export default function Posts() {
   const {
@@ -30,26 +36,36 @@ export default function Posts() {
   }));
 
   return (
-    <>
+    <Accordion
+      type="single"
+      collapsible
+    >
       {postWithUserName?.map((post) => (
-        <div
+        <AccordionItem
+          value={String(post.id)}
           key={post.id}
-          className="grid gap-x-4 gap-y-1"
         >
-          <Avatar className="self-center">
-            <AvatarImage src="https://github.com/shadcn.png" />
-            <AvatarFallback className="flex gap-0.5">
-              <span>{post.userName?.split(' ')[0][0] || 'A'}</span>
-              <span>{post.userName?.split(' ')[1][0] || 'B'}</span>
-            </AvatarFallback>
-          </Avatar>
-          <p className="self-center">{post.userName}</p>
-          <div className="col-start-2">
-            <h3>{post.title}</h3>
-            <p>{post.body}</p>
-          </div>
-        </div>
+          <AccordionTrigger className="flex gap-2">
+            <div className="grid gap-x-4 gap-y-1">
+              <Avatar className="self-center">
+                <AvatarImage src="https://github.com/shadcn.png" />
+                <AvatarFallback className="flex gap-0.5">
+                  <span>{post.userName?.split(' ')[0][0] || 'A'}</span>
+                  <span>{post.userName?.split(' ')[1][0] || 'B'}</span>
+                </AvatarFallback>
+              </Avatar>
+              <p className="self-center">{post.userName}</p>
+              <div className="col-start-2">
+                <h3>{post.title}</h3>
+                <p>{post.body}</p>
+              </div>
+            </div>
+          </AccordionTrigger>
+          <AccordionContent>
+            Yes. It adheres to the WAI-ARIA design pattern.
+          </AccordionContent>
+        </AccordionItem>
       ))}
-    </>
+    </Accordion>
   );
 }
