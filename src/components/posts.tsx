@@ -34,7 +34,7 @@ export default function Posts() {
       {postWithUserName?.map((post) => (
         <div
           key={post.id}
-          className="grid gap-x-4 gap-y-2"
+          className="grid gap-x-4 gap-y-1"
         >
           <Avatar className="self-center">
             <AvatarImage src="https://github.com/shadcn.png" />
