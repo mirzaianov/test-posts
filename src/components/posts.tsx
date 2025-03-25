@@ -1,6 +1,6 @@
 import useFetch from '../hooks/useFetch';
-import { POSTS_URL, USERS_URL } from '../constants';
-import { type User, type Post } from '../types';
+import { COMMENTS_URL, POSTS_URL, USERS_URL } from '../constants';
+import { type User, type Post, Comment } from '../types';
 import { Avatar, AvatarFallback, AvatarImage } from '../components/ui/avatar';
 import {
   Accordion,
@@ -22,11 +22,17 @@ export default function Posts() {
     error: usersError,
   } = useFetch<User[]>(USERS_URL);
 
-  if (postsIsLoading || usersIsLoading) {
+  const {
+    data: commentsData,
+    isLoading: commentsIsLoading,
+    error: commentsError,
+  } = useFetch<Comment[]>(COMMENTS_URL);
+
+  if (postsIsLoading || usersIsLoading || commentsIsLoading) {
     return <div>Loading...</div>;
   }
 
-  if (postsError || usersError) {
+  if (postsError || usersError || commentsError) {
     return <div>{postsError?.message || usersError?.message}</div>;
   }
 
@@ -34,6 +40,10 @@ export default function Posts() {
     ...post,
     userName: usersData?.find((user) => user.id === post.userId)?.name,
   }));
+
+  const filterCommentsByPost = (id: number) => {
+    return commentsData?.filter((comment) => comment.postId === id);
+  };
 
   return (
     <Accordion
@@ -45,7 +55,7 @@ export default function Posts() {
           value={String(post.id)}
           key={post.id}
         >
-          <AccordionTrigger className="flex gap-2">
+          <div className="flex gap-2 py-4">
             <div className="grid gap-x-4 gap-y-1">
               <Avatar className="self-center">
                 <AvatarImage src="https://github.com/shadcn.png" />
@@ -56,13 +66,23 @@ export default function Posts() {
               </Avatar>
               <p className="self-center">{post.userName}</p>
               <div className="col-start-2">
-                <h3>{post.title}</h3>
+                <h3 className="font-semibold">{post.title}</h3>
                 <p>{post.body}</p>
               </div>
             </div>
-          </AccordionTrigger>
+            <AccordionTrigger className="flex gap-2"></AccordionTrigger>
+          </div>
           <AccordionContent>
-            Yes. It adheres to the WAI-ARIA design pattern.
+            {filterCommentsByPost(post.id)?.map((comment) => (
+              <div
+                key={comment.id}
+                className="border-b py-2"
+              >
+                <h4 className="font-semibold">{comment.name}</h4>
+                <p>{comment.email}</p>
+                <p>{comment.body}</p>
+              </div>
+            ))}
           </AccordionContent>
         </AccordionItem>
       ))}
