@@ -75,7 +75,7 @@ export default function Posts() {
           <AccordionContent className="pr-6 pl-12">
             {filterCommentsByPost(post.id)?.map((comment) => (
               <div
-                className="grid gap-x-4 gap-y-1 border-t py-2"
+                className="grid gap-x-2 gap-y-1 border-t py-2"
                 key={comment.id}
               >
                 <Avatar className="self-center">
@@ -84,7 +84,7 @@ export default function Posts() {
                     <span>{comment.email?.[1].toLocaleUpperCase() || 'B'}</span>
                   </AvatarFallback>
                 </Avatar>
-                <h4 className="self-center">Author: {comment.email}</h4>
+                <h4 className="self-center">{comment.email}</h4>
                 <div className="col-start-2 flex flex-col gap-1">
                   <h5 className="font-bold">{comment.name}</h5>
                   <p>{comment.body}</p>
