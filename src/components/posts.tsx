@@ -1,6 +1,11 @@
 import useFetch from '../hooks/useFetch';
 import { COMMENTS_URL, POSTS_URL, USERS_URL, AVATAR_URL } from '../constants';
-import { type User, type Post, Comment } from '../types';
+import {
+  type User,
+  type Post,
+  type Comment,
+  type PostWithUserName,
+} from '../types';
 import { Avatar, AvatarFallback, AvatarImage } from '../components/ui/avatar';
 import {
   Accordion,
@@ -36,10 +41,12 @@ export default function Posts() {
     return <div>{postsError?.message || usersError?.message}</div>;
   }
 
-  const postWithUserName = postsData?.map((post) => ({
-    ...post,
-    userName: usersData?.find((user) => user.id === post.userId)?.name,
-  }));
+  const postWithUserName: PostWithUserName[] | undefined = postsData?.map(
+    (post) => ({
+      ...post,
+      userName: usersData?.find((user) => user.id === post.userId)?.name,
+    }),
+  );
 
   const filterCommentsByPost = (id: number) => {
     return commentsData?.filter((comment) => comment.postId === id);

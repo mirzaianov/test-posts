@@ -29,6 +29,8 @@ export type Post = {
   body: string;
 };
 
+export type PostWithUserName = Post & { userName: string | undefined };
+
 export type Comment = {
   postId: number;
   id: number;
