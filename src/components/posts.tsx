@@ -1,5 +1,5 @@
 import useFetch from '../hooks/useFetch';
-import { COMMENTS_URL, POSTS_URL, USERS_URL } from '../constants';
+import { COMMENTS_URL, POSTS_URL, USERS_URL, AVATAR_URL } from '../constants';
 import { type User, type Post, Comment } from '../types';
 import { Avatar, AvatarFallback, AvatarImage } from '../components/ui/avatar';
 import {
@@ -58,7 +58,7 @@ export default function Posts() {
           <div className="flex gap-2 py-4">
             <div className="grid gap-x-4 gap-y-1">
               <Avatar className="self-center">
-                <AvatarImage src="https://github.com/shadcn.png" />
+                <AvatarImage src={`${AVATAR_URL}${post.userId}`} />
                 <AvatarFallback className="flex gap-0.5">
                   <span>{post.userName?.split(' ')[0][0] || 'A'}</span>
                   <span>{post.userName?.split(' ')[1][0] || 'B'}</span>
@@ -76,7 +76,7 @@ export default function Posts() {
             {filterCommentsByPost(post.id)?.map((comment) => (
               <div
                 key={comment.id}
-                className="border-b py-2"
+                className="border-t py-2"
               >
                 <h4 className="font-semibold">{comment.name}</h4>
                 <p>{comment.email}</p>
