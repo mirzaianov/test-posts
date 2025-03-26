@@ -65,22 +65,30 @@ export default function Posts() {
                 </AvatarFallback>
               </Avatar>
               <p className="self-center">{post.userName}</p>
-              <div className="col-start-2">
+              <div className="col-start-2 flex flex-col gap-1">
                 <h3 className="font-semibold">{post.title}</h3>
                 <p>{post.body}</p>
               </div>
             </div>
             <AccordionTrigger className="flex gap-2"></AccordionTrigger>
           </div>
-          <AccordionContent>
+          <AccordionContent className="pr-6 pl-12">
             {filterCommentsByPost(post.id)?.map((comment) => (
               <div
+                className="grid gap-x-4 gap-y-1 border-t py-2"
                 key={comment.id}
-                className="border-t py-2"
               >
-                <h4 className="font-semibold">{comment.name}</h4>
-                <p>{comment.email}</p>
-                <p>{comment.body}</p>
+                <Avatar className="self-center">
+                  <AvatarFallback className="flex gap-0.5">
+                    <span>{comment.email?.[0] || 'A'}</span>
+                    <span>{comment.email?.[1].toLocaleUpperCase() || 'B'}</span>
+                  </AvatarFallback>
+                </Avatar>
+                <h4 className="self-center">Author: {comment.email}</h4>
+                <div className="col-start-2 flex flex-col gap-1">
+                  <h5 className="font-bold">{comment.name}</h5>
+                  <p>{comment.body}</p>
+                </div>
               </div>
             ))}
           </AccordionContent>
