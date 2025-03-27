@@ -42,7 +42,7 @@ export default function PostsList({ currentPosts }: PostsListProps) {
           value={String(post.id)}
           key={post.id}
         >
-          <div className="flex gap-2 py-4">
+          <div className="flex gap-4 py-4">
             <div className="grid gap-x-4 gap-y-1">
               <Avatar className="self-center">
                 <AvatarImage src={`${AVATAR_URL}${post.userId}`} />
