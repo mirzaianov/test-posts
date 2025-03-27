@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import useFetch from '../hooks/useFetch';
+import PostsSkeleton from './posts-skeleton';
 import { POSTS_URL, USERS_URL, COMMENTS_URL } from '../constants';
 import {
   type User,
@@ -33,11 +34,10 @@ export default function Posts() {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [postsPerPage, setPostsPerPage] = useState<number>(5);
 
-  if (postsIsLoading || usersIsLoading || commentsIsLoading) {
-    return <div>Loading...</div>;
-  }
+  const isLoading = postsIsLoading || usersIsLoading || commentsIsLoading;
+  const isError = postsError || usersError || commentsError;
 
-  if (postsError || usersError || commentsError) {
+  if (isError) {
     return (
       <div>
         {postsError?.message || usersError?.message || commentsError?.message}
@@ -60,11 +60,15 @@ export default function Posts() {
   );
 
   return (
-    <div className="flex flex-col gap-4">
-      <PostsList
-        currentPosts={currentPosts}
-        commentsData={commentsData ?? undefined}
-      />
+    <div className="flex w-full flex-col gap-4">
+      {isLoading ? (
+        <PostsSkeleton postsPerPage={postsPerPage} />
+      ) : (
+        <PostsList
+          currentPosts={currentPosts}
+          commentsData={commentsData ?? undefined}
+        />
+      )}
       <div className="flex items-center justify-between">
         <PagesSelect
           options={[5, 10, 15, 20]}

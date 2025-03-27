@@ -15,6 +15,11 @@ const useFetch = <T>(
         setIsLoading(true);
         setError(null);
 
+        // ! Added intensionally to show Skeleton
+        // TODO: Remove in production
+        await new Promise((resolve) => setTimeout(resolve, 2000));
+        // !
+
         const response = await fetch(url);
 
         if (!response.ok) {
@@ -26,7 +31,6 @@ const useFetch = <T>(
         if (isMounted) {
           setData(result);
         }
-
       } catch (e) {
         if (isMounted) {
           setError(e instanceof Error ? e : new Error('An unknown error!'));
