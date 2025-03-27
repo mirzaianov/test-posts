@@ -1,65 +1,23 @@
-import { useState } from 'react';
-import useFetch from '../hooks/useFetch';
 import PostsSkeleton from './posts-skeleton';
-import { POSTS_URL, USERS_URL, COMMENTS_URL } from '../constants';
-import {
-  type User,
-  type Post,
-  type PostWithUserName,
-  type PostComment,
-} from '../types';
-import PagesSelect from './pages-select';
-import PagesPagination from './pages-pagination';
 import PostsList from './posts-list';
-import AlertCard from './alert-card';
 
-export default function Posts() {
-  const {
-    data: postsData,
-    isLoading: postsIsLoading,
-    error: postsError,
-  } = useFetch<Post[]>(POSTS_URL);
+import { type PostWithUserName, type PostComment } from '../types';
 
-  const {
-    data: usersData,
-    isLoading: usersIsLoading,
-    error: usersError,
-  } = useFetch<User[]>(USERS_URL);
+type PostsProps = {
+  isLoading: boolean;
+  postsPerPage: number;
+  currentPosts: PostWithUserName[] | undefined;
+  commentsData: PostComment[] | undefined;
+};
 
-  const {
-    data: commentsData,
-    isLoading: commentsIsLoading,
-    error: commentsError,
-  } = useFetch<PostComment[]>(COMMENTS_URL);
-
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const [postsPerPage, setPostsPerPage] = useState<number>(5);
-
-  const isLoading: boolean =
-    postsIsLoading || usersIsLoading || commentsIsLoading;
-  const error: Error | null = postsError || usersError || commentsError;
-
-  if (error) {
-    console.log(error);
-    return <AlertCard errorMessage={error.message} />;
-  }
-
-  const postWithUserName: PostWithUserName[] | undefined = postsData?.map(
-    (post) => ({
-      ...post,
-      userName: usersData?.find((user) => user.id === post.userId)?.name,
-    }),
-  );
-
-  const indexOfLastPost: number = currentPage * postsPerPage;
-  const indexOfFirstPost: number = indexOfLastPost - postsPerPage;
-  const currentPosts: PostWithUserName[] | undefined = postWithUserName?.slice(
-    indexOfFirstPost,
-    indexOfLastPost,
-  );
-
+export default function Posts({
+  isLoading,
+  postsPerPage,
+  currentPosts,
+  commentsData,
+}: PostsProps) {
   return (
-    <div className="flex w-full flex-col gap-10 md:gap-16 xl:gap-24">
+    <div className="w-full">
       {isLoading ? (
         <PostsSkeleton postsPerPage={postsPerPage} />
       ) : (
@@ -68,21 +26,6 @@ export default function Posts() {
           commentsData={commentsData ?? undefined}
         />
       )}
-      <div className="flex items-center justify-between">
-        <div className="hidden md:block">
-          <PagesSelect
-            options={[5, 10, 15, 20]}
-            postsPerPage={postsPerPage}
-            setPostsPerPage={setPostsPerPage}
-          />
-        </div>
-        <PagesPagination
-          currentPage={currentPage}
-          setCurrentPage={setCurrentPage}
-          postsPerPage={postsPerPage}
-          postWithUserName={postWithUserName}
-        />
-      </div>
     </div>
   );
 }
