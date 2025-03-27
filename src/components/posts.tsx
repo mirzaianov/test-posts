@@ -2,7 +2,6 @@ import { useState } from 'react';
 import useFetch from '../hooks/useFetch';
 import { POSTS_URL, USERS_URL } from '../constants';
 import { type User, type Post, type PostWithUserName } from '../types';
-
 import PagesSelect from './pages-select';
 import PagesPagination from './pages-pagination';
 import PostsList from './posts-list';

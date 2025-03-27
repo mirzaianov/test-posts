@@ -7,7 +7,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from '@/components/ui/pagination';
-import { cn } from '../lib/utils';
+import { cn } from '@/lib/utils';
 import { type PostWithUserName } from '../types';
 
 type PagesPaginationProps = {
@@ -23,17 +23,13 @@ export default function PagesPagination({
   postsPerPage,
   postWithUserName,
 }: PagesPaginationProps) {
-  const handleNextPage = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-
+  const handleNextPage = () => {
     if (currentPage < totalPageCount) {
       setCurrentPage((prev) => prev + 1);
     }
   };
 
-  const handlePreviousPage = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-
+  const handlePreviousPage = () => {
     if (currentPage > 1) {
       setCurrentPage((prev) => prev - 1);
     }
@@ -60,7 +56,6 @@ export default function PagesPagination({
               },
               'cursor-pointer',
             )}
-            disabled={currentPage === 1}
             onClick={handlePreviousPage}
           />
         </PaginationItem>
@@ -111,7 +106,6 @@ export default function PagesPagination({
               },
               'cursor-pointer',
             )}
-            disabled={currentPage === totalPageCount}
             onClick={handleNextPage}
           />
         </PaginationItem>
