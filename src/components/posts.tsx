@@ -11,6 +11,7 @@ import {
 import PagesSelect from './pages-select';
 import PagesPagination from './pages-pagination';
 import PostsList from './posts-list';
+import AlertCard from './alert-card';
 
 export default function Posts() {
   const {
@@ -34,15 +35,13 @@ export default function Posts() {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [postsPerPage, setPostsPerPage] = useState<number>(5);
 
-  const isLoading = postsIsLoading || usersIsLoading || commentsIsLoading;
-  const isError = postsError || usersError || commentsError;
+  const isLoading: boolean =
+    postsIsLoading || usersIsLoading || commentsIsLoading;
+  const error: Error | null = postsError || usersError || commentsError;
 
-  if (isError) {
-    return (
-      <div>
-        {postsError?.message || usersError?.message || commentsError?.message}
-      </div>
-    );
+  if (error) {
+    console.log(error);
+    return <AlertCard errorMessage={error.message} />;
   }
 
   const postWithUserName: PostWithUserName[] | undefined = postsData?.map(
