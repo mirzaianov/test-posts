@@ -38,10 +38,6 @@ export default function PostsSkeleton({ postsPerPage }: PostsSkeletonProps) {
           </div>
         </li>
       </ul>
-      <div className="flex w-full justify-between">
-        <Skeleton className="h-9 w-14 rounded-md" />
-        <Skeleton className="h-9 w-72 rounded-md" />
-      </div>
     </>
   );
 }
