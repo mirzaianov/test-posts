@@ -1,4 +1,4 @@
-import { EventHandler, useState } from 'react';
+import { useState } from 'react';
 import useFetch from '../hooks/useFetch';
 import { COMMENTS_URL, POSTS_URL, USERS_URL, AVATAR_URL } from '../constants';
 import {
@@ -14,23 +14,9 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
-import {
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from '@/components/ui/pagination';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
-import { cn } from '../lib/utils';
+
+import PagesSelect from './pages-select';
+import PagesPagination from './pages-pagination';
 
 export default function Posts() {
   const {
@@ -53,6 +39,8 @@ export default function Posts() {
 
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [postsPerPage, setPostsPerPage] = useState<number>(5);
+
+  console.log('postsPerPage >> ', postsPerPage);
 
   if (postsIsLoading || usersIsLoading || commentsIsLoading) {
     return <div>Loading...</div>;
@@ -79,37 +67,6 @@ export default function Posts() {
     indexOfFirstPost,
     indexOfLastPost,
   );
-
-  const totalPageCount: number = Math.ceil(
-    (postWithUserName?.length || 0) / postsPerPage,
-  );
-
-  const handleNextPage = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-
-    if (currentPage < totalPageCount) {
-      setCurrentPage((prev) => prev + 1);
-    }
-  };
-
-  const handlePreviousPage = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-
-    if (currentPage > 1) {
-      setCurrentPage((prev) => prev - 1);
-    }
-  };
-
-  const handlePageSwitch = (pageNumber: number) => {
-    if (pageNumber >= 1 && pageNumber <= totalPageCount) {
-      setCurrentPage(pageNumber);
-    }
-  };
-
-  const handlePostsPerPageChange = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    setPostsPerPage(Number(e.currentTarget.value));
-  };
 
   return (
     <div className="flex flex-col gap-4">
@@ -165,104 +122,17 @@ export default function Posts() {
         ))}
       </Accordion>
       <div className="flex items-center justify-between">
-        <Select>
-          <SelectTrigger>
-            <SelectValue placeholder={postsPerPage} />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem
-              value="10"
-              onClick={handlePostsPerPageChange}
-            >
-              10
-            </SelectItem>
-            <SelectItem
-              value="25"
-              onClick={handlePostsPerPageChange}
-            >
-              25
-            </SelectItem>
-            <SelectItem
-              value="50"
-              onClick={handlePostsPerPageChange}
-            >
-              50
-            </SelectItem>
-            <SelectItem
-              value="100"
-              onClick={handlePostsPerPageChange}
-            >
-              100
-            </SelectItem>
-          </SelectContent>
-        </Select>
-        <Pagination>
-          <PaginationContent className="ml-auto">
-            <PaginationItem>
-              <PaginationPrevious
-                className={cn(
-                  {
-                    'pointer-events-none opacity-50': currentPage === 1,
-                  },
-                  'cursor-pointer',
-                )}
-                disabled={currentPage === 1}
-                onClick={handlePreviousPage}
-              />
-            </PaginationItem>
-            {currentPage > 1 && (
-              <PaginationItem>
-                <PaginationLink
-                  className="cursor-pointer"
-                  onClick={() => handlePageSwitch(1)}
-                >
-                  1
-                </PaginationLink>
-              </PaginationItem>
-            )}
-            {currentPage > 1 && (
-              <PaginationItem>
-                <PaginationEllipsis />
-              </PaginationItem>
-            )}
-            <PaginationItem>
-              <PaginationLink
-                className="cursor-default"
-                isActive
-              >
-                {currentPage}
-              </PaginationLink>
-            </PaginationItem>
-            {currentPage < totalPageCount && (
-              <PaginationItem>
-                <PaginationEllipsis />
-              </PaginationItem>
-            )}
-            {currentPage < totalPageCount && (
-              <PaginationItem>
-                <PaginationLink
-                  className="cursor-pointer"
-                  onClick={() => handlePageSwitch(totalPageCount)}
-                >
-                  {totalPageCount}
-                </PaginationLink>
-              </PaginationItem>
-            )}
-            <PaginationItem>
-              <PaginationNext
-                className={cn(
-                  {
-                    'pointer-events-none opacity-50':
-                      currentPage === totalPageCount,
-                  },
-                  'cursor-pointer',
-                )}
-                disabled={currentPage === totalPageCount}
-                onClick={handleNextPage}
-              />
-            </PaginationItem>
-          </PaginationContent>
-        </Pagination>
+        <PagesSelect
+          options={[5, 10, 15, 20]}
+          postsPerPage={postsPerPage}
+          setPostsPerPage={setPostsPerPage}
+        />
+        <PagesPagination
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+          postsPerPage={postsPerPage}
+          postWithUserName={postWithUserName}
+        />
       </div>
     </div>
   );
