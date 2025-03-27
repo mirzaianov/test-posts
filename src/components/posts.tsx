@@ -197,7 +197,7 @@ export default function Posts() {
           </SelectContent>
         </Select>
         <Pagination>
-          <PaginationContent>
+          <PaginationContent className="ml-auto">
             <PaginationItem>
               <PaginationPrevious
                 className={cn(
@@ -226,23 +226,37 @@ export default function Posts() {
               </PaginationItem>
             )}
             <PaginationItem>
-              <PaginationLink>{currentPage}</PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationEllipsis />
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink onClick={() => handlePageSwitch(totalPageCount)}>
-                {totalPageCount}
+              <PaginationLink
+                className="cursor-default"
+                isActive
+              >
+                {currentPage}
               </PaginationLink>
             </PaginationItem>
+            {currentPage < totalPageCount && (
+              <PaginationItem>
+                <PaginationEllipsis />
+              </PaginationItem>
+            )}
+            {currentPage < totalPageCount && (
+              <PaginationItem>
+                <PaginationLink
+                  className="cursor-pointer"
+                  onClick={() => handlePageSwitch(totalPageCount)}
+                >
+                  {totalPageCount}
+                </PaginationLink>
+              </PaginationItem>
+            )}
             <PaginationItem>
               <PaginationNext
-                className={
-                  currentPage === totalPageCount
-                    ? 'pointer-events-none opacity-50'
-                    : ''
-                }
+                className={cn(
+                  {
+                    'pointer-events-none opacity-50':
+                      currentPage === totalPageCount,
+                  },
+                  'cursor-pointer',
+                )}
                 disabled={currentPage === totalPageCount}
                 onClick={handleNextPage}
               />
