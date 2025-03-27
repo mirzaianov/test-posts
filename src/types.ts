@@ -31,7 +31,7 @@ export type Post = {
 
 export type PostWithUserName = Post & { userName: string | undefined };
 
-export type Comment = {
+export type PostComment = {
   postId: number;
   id: number;
   name: string;

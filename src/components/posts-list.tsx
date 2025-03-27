@@ -5,30 +5,19 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
-import useFetch from '../hooks/useFetch';
-import { COMMENTS_URL, AVATAR_URL } from '../constants';
-import { Comment, PostWithUserName } from '../types';
+import { AVATAR_URL } from '../constants';
+import { type PostComment, type PostWithUserName } from '../types';
 
 type PostsListProps = {
   currentPosts: PostWithUserName[] | undefined;
+  commentsData: PostComment[] | undefined;
 };
 
-export default function PostsList({ currentPosts }: PostsListProps) {
-  const {
-    data: commentsData,
-    isLoading: commentsIsLoading,
-    error: commentsError,
-  } = useFetch<Comment[]>(COMMENTS_URL);
-
-  if (commentsIsLoading) {
-    return <div>Loading...</div>;
-  }
-
-  if (commentsError) {
-    return <div>{commentsError.message}</div>;
-  }
-
-  const filterCommentsByPost = (id: number): Comment[] | undefined => {
+export default function PostsList({
+  currentPosts,
+  commentsData,
+}: PostsListProps) {
+  const filterCommentsByPost = (id: number): PostComment[] | undefined => {
     return commentsData?.filter((comment) => comment.postId === id);
   };
 

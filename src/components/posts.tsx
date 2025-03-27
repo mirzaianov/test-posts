@@ -1,7 +1,12 @@
 import { useState } from 'react';
 import useFetch from '../hooks/useFetch';
-import { POSTS_URL, USERS_URL } from '../constants';
-import { type User, type Post, type PostWithUserName } from '../types';
+import { POSTS_URL, USERS_URL, COMMENTS_URL } from '../constants';
+import {
+  type User,
+  type Post,
+  type PostWithUserName,
+  type PostComment,
+} from '../types';
 import PagesSelect from './pages-select';
 import PagesPagination from './pages-pagination';
 import PostsList from './posts-list';
@@ -19,15 +24,25 @@ export default function Posts() {
     error: usersError,
   } = useFetch<User[]>(USERS_URL);
 
+  const {
+    data: commentsData,
+    isLoading: commentsIsLoading,
+    error: commentsError,
+  } = useFetch<PostComment[]>(COMMENTS_URL);
+
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [postsPerPage, setPostsPerPage] = useState<number>(5);
 
-  if (postsIsLoading || usersIsLoading) {
+  if (postsIsLoading || usersIsLoading || commentsIsLoading) {
     return <div>Loading...</div>;
   }
 
-  if (postsError || usersError) {
-    return <div>{postsError?.message || usersError?.message}</div>;
+  if (postsError || usersError || commentsError) {
+    return (
+      <div>
+        {postsError?.message || usersError?.message || commentsError?.message}
+      </div>
+    );
   }
 
   const postWithUserName: PostWithUserName[] | undefined = postsData?.map(
@@ -46,7 +61,10 @@ export default function Posts() {
 
   return (
     <div className="flex flex-col gap-4">
-      <PostsList currentPosts={currentPosts} />
+      <PostsList
+        currentPosts={currentPosts}
+        commentsData={commentsData ?? undefined}
+      />
       <div className="flex items-center justify-between">
         <PagesSelect
           options={[5, 10, 15, 20]}
