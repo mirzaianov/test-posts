@@ -59,7 +59,7 @@ export default function Posts() {
   );
 
   return (
-    <div className="flex w-full flex-col gap-4">
+    <div className="flex w-full flex-col gap-10 md:gap-16 xl:gap-24">
       {isLoading ? (
         <PostsSkeleton postsPerPage={postsPerPage} />
       ) : (
@@ -69,11 +69,13 @@ export default function Posts() {
         />
       )}
       <div className="flex items-center justify-between">
-        <PagesSelect
-          options={[5, 10, 15, 20]}
-          postsPerPage={postsPerPage}
-          setPostsPerPage={setPostsPerPage}
-        />
+        <div className="hidden md:block">
+          <PagesSelect
+            options={[5, 10, 15, 20]}
+            postsPerPage={postsPerPage}
+            setPostsPerPage={setPostsPerPage}
+          />
+        </div>
         <PagesPagination
           currentPage={currentPage}
           setCurrentPage={setCurrentPage}

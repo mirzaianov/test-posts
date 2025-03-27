@@ -40,7 +40,7 @@ export default function PostsList({
                   <span>{post.userName?.split(' ')[1][0] || 'B'}</span>
                 </AvatarFallback>
               </Avatar>
-              <p className="self-center">{post.userName}</p>
+              <p className="self-center text-xl">{post.userName}</p>
               <div className="col-start-2 flex flex-col gap-1">
                 <h3 className="font-semibold">{post.title}</h3>
                 <p>{post.body}</p>
