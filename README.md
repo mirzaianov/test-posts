@@ -1,4 +1,4 @@
-<!-- ![MasterHead](./head.png) -->
+![MasterHead](./head.gif)
 
 # "POSTS" Test Project
 
@@ -37,8 +37,12 @@
 
 Vite will start frontend server on [http://localhost:5173/](http://localhost:5173/)
 
+### Or open the deployed site
+
+[https://posts-mirzaianov.vercel.app/](https://posts-mirzaianov.vercel.app/)
+
 ## License
 
 ### MIT license
 
-You can use the code, but I ask you do not copy this site without giving me credit.
+You can use the code, but I ask you do not copy this site without giving me credit
