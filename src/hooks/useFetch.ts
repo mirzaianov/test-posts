@@ -17,7 +17,7 @@ const useFetch = <T>(
 
         // ! Added intensionally to show Skeleton
         // TODO: Remove in production
-        await new Promise((resolve) => setTimeout(resolve, 2000));
+        await new Promise((resolve) => setTimeout(resolve, 1500));
         // !
 
         const response = await fetch(url);
