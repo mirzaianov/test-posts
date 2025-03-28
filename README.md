@@ -25,7 +25,7 @@
 
 ```bash
   git clone https://github.com/mirzaianov/test-posts.git
-  cd posts
+  cd test-posts
   pnpm install
 ```
 
