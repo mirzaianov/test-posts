@@ -20,7 +20,7 @@ export default function PostsSkeleton({ postsPerPage }: PostsSkeletonProps) {
               <div className="grid w-full grid-cols-[auto_1fr] gap-x-4 gap-y-2">
                 <Skeleton className="size-8 rounded-full" />
                 <Skeleton className="" />
-                <Skeleton className="col-start-2 h-16" />
+                <Skeleton className="col-start-2 h-[72px]" />
               </div>
               <Skeleton className="flex size-6 self-center" />
             </div>
